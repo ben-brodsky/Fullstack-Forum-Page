@@ -22,6 +22,12 @@ export async function getPostFromID(id)
     return result[0]
 }
 
+export async function getCommentsUnderPost(id)
+{
+    const [result] = await pool.query("SELECT * FROM comments WHERE ID = ?", [id])
+    return result
+}
+
 export async function createPost(username, title, contents)
 {
     const [result] = await pool.query("INSERT INTO posts (Username, Title, Contents) VALUES (?, ?, ?)", [username, title, contents])

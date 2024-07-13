@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <h1>Forum Page</h1>
+        <ul>
+            <% posts.findLast(post => { %>
+                <li>
+                    <h5><%= post.Username %></h5>
+                    <h2><a href="/posts/<%=post.ID%>"><%= post.Title %></a></h2>
+                </li>
+            <%})%>
+        </ul>
+    </body>
+</html>
