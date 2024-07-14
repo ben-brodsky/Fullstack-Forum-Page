@@ -1,9 +1,11 @@
 import express from 'express'
-import {getPosts, getPostFromID, createPost, getCommentsUnderPost} from "./database.js"
+import {getPosts, getPostFromID, createPost, getCommentsUnderPost, createComment} from "./database.js"
 
 const app = express()
 const port = 8080
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+
 
 app.set("view engine", "ejs")
 app.set("views", "views")
@@ -28,6 +30,20 @@ app.post("/posts", async (req, res) =>
     const {username, title, contents} = req.body
     const result = await createPost(username, title, contents)
     res.status(201).send(result)
+})
+
+app.post("/posts/:id", async (req, res) => {
+
+    const postID = req.params.id
+    const contents = req.body.commentContents
+
+    if (req.body.commentContents != null)
+    {
+        const result = await createComment(contents, postID)
+        const post = await getPostFromID(postID)
+        const comments = await getCommentsUnderPost(postID)
+        res.render("post.ejs", {post: post, comments: comments})
+    }
 })
 
 app.use((err, req, res, next) =>

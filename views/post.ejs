@@ -8,12 +8,24 @@
 </head>
 <body>
     <h1><a href="/posts">Forum Page</a></h1>
+    <div id="renderedPost">
+        <h5><%= post.Username%></h5>
+        <h2><%= post.Title%></h2>
+        <p><%= post.Contents%></p>
+    </div>
+    <div id="commentForm">
+        <form action="/posts/<%=post.ID%>" method="POST">
+            <input type="text" name="commentContents" placeholder="Add a comment"/>
+            <input type="submit" value="Submit"/>
+        </form>
+    </div>  
     <ul>
-        <li>
-            <h5><%= post.Username%></h5>
-            <h2><%= post.Title%></h2>
-            <p><%= post.Contents%></p>
-        </li>
+        <% comments.findLast(comment => { %>
+            <li>
+                <h5 id="commentUsername"><%= comment.Username %></h5>
+                <p><%= comment.Contents%></p>
+            </li>
+        <%})%>
     </ul>
 </body>
 </html>

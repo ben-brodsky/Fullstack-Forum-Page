@@ -1,12 +1,81 @@
+
+#renderedPost {
+    background-color: rgb(157, 208, 255);
+    border-radius: 5px;
+
+    margin-left:400px;
+    margin-right:400px;
+
+    padding-bottom:1px;
+}
+
+#commentForm {
+    
+    padding-top:10px;
+    margin-left:400px;
+}
+
+#commentUsername {
+
+    padding-bottom:5px;
+}
+
+input[type=text] {
+    padding-right: 100px;
+    padding-bottom: 50px;
+
+    padding:10px;
+
+    border-style:hidden;
+    border-width: medium medium medium;
+    border-color: rgb(157, 208, 255);
+
+    border-radius: 4px;
+    background-color: rgb(157, 208, 255);
+
+    font-family: "Verdana", Courier, monospace
+}
+
+input[type=text]:focus {
+
+    outline: rgb(157, 208, 255);
+    border-style:hidden;
+    border-width: medium medium medium;
+    border-color: rgb(157, 208, 255);
+    background-color: rgb(139, 202, 244);
+}
+
+input[type=submit] {
+    border-style:hidden;
+    border-width: medium medium medium;
+    border-color: rgb(157, 208, 255);
+
+    cursor: pointer;
+
+    border-radius: 4px;
+    background-color: rgb(157, 208, 255);
+
+    padding: 5px;
+
+    font-family: "Verdana", Courier, monospace
+}
+
+input[type=submit]:hover {
+    border-style:hidden;
+    border-width: medium medium medium;
+    border-color: rgb(157, 208, 255);
+
+    cursor: pointer;
+
+    border-radius: 4px;
+    background-color: rgb(41, 108, 171);
+}
+
 body {
     font-family:"Verdana", Courier, monospace;
     background-color: rgb(211, 236, 255);
 }
 
-#backButton {
-    display:inline-block;
-    margin-left:500px;
-}
 
 li {
     background-color: rgb(157, 208, 255);
