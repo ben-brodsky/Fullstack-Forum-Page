@@ -1,3 +1,111 @@
+.content-header 
+{
+    justify-content: left;
+    align-content: center;
+    display:flex;
+
+    width:100%;
+    height:100px;
+
+    position: fixed;
+}
+
+.comment-container
+{
+    display: flex;
+    flex-direction: column;
+
+    max-width: 660px;
+    min-width: 600px;
+
+    word-wrap: break-word;
+
+    margin-left: 340px;
+    margin-right: 400px;
+    margin-top: 0px;
+}
+
+.post-container
+{
+    background-color: rgb(121, 170, 215);
+    border-radius: 6px;
+
+    display: flex;
+    flex-direction: column;
+
+    max-width: 600px;
+    min-width: 600px;
+
+    word-wrap: break-word;
+
+    margin-left: 400px;
+    margin-right: 400px;
+    margin-bottom:100px;
+
+    padding-bottom: 5px;
+
+    box-shadow: 0px 0px 10px 0px #0000004c;
+    z-index: 10;
+}
+
+.main-post-container
+{
+    display: flex;
+    flex-direction: column;
+
+    max-width: 600px;
+    min-width: 600px;
+
+    word-wrap: break-word;
+
+    margin-left: 400px;
+    margin-right: 400px;
+    margin-bottom:10px;
+}
+
+.post-object
+{
+    background-color: rgb(157, 208, 255);
+    border-radius: 5px;
+
+    margin-bottom: 20px;
+}
+
+.main-post-object
+{
+    background-color: rgb(157, 208, 255);
+    border-radius: 5px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0px 0px 10px 0px #0000004c;
+    z-index: 10;
+}
+
+.comment-object
+{
+    background-color: rgb(129, 187, 242);
+    border-radius: 5px;
+
+    box-shadow: 0px 0px 10px 0px #0000004c;
+    z-index: 10;
+}
+
+.reply-object
+{
+    background-color: rgb(121, 171, 218);
+    border-radius: 5px;
+
+    box-shadow: 0px 0px 10px 0px #0000004c;
+    z-index: 10;
+}
+
+ul.nested-ul {
+
+    margin-left: 60px;
+    margin-bottom: 0px;
+}
+
 
 #renderedPost {
     background-color: rgb(157, 208, 255);
@@ -11,20 +119,42 @@
 
 #commentForm {
     
+    margin-top:-20px;
+    margin-bottom: -20px;
+
+    padding-left:5px;
     padding-top:10px;
-    margin-left:400px;
+    padding-bottom:10px;
+
+    background-color: rgb(88, 134, 176);
+    border-radius: 5px;
+
+}
+
+#replyForm {
+
+    padding-top:5px;
+    padding-bottom:5px;
+    padding-left:5px;
+
+    background-color: rgb(88, 134, 176);
+    border-radius: 5px;
 }
 
 #commentUsername {
 
+    padding-top:5px;
     padding-bottom:5px;
 }
 
-input[type=text] {
-    padding-right: 100px;
-    padding-bottom: 50px;
+#topGap {
+    padding:30px;
+}
 
-    padding:10px;
+input[type=text] {
+
+    width: 150px;
+    padding:5px;
 
     border-style:hidden;
     border-width: medium medium medium;
@@ -38,11 +168,15 @@ input[type=text] {
 
 input[type=text]:focus {
 
+    width:70%;
+
     outline: rgb(157, 208, 255);
     border-style:hidden;
     border-width: medium medium medium;
     border-color: rgb(157, 208, 255);
     background-color: rgb(139, 202, 244);
+
+    transition: 0.2s;
 }
 
 input[type=submit] {
@@ -68,37 +202,20 @@ input[type=submit]:hover {
     cursor: pointer;
 
     border-radius: 4px;
-    background-color: rgb(41, 108, 171);
+    background-color: rgb(139, 202, 244);
 }
 
 body {
     font-family:"Verdana", Courier, monospace;
     background-color: rgb(211, 236, 255);
+
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+
 }
 
-
-li {
-    background-color: rgb(157, 208, 255);
-    border-radius: 5px;
-
-    margin-right: 400px;    
-    margin-left: 400px;
-
-    padding-bottom:1px;
-}
-
-h1  
-{
-    background-color: rgb(157, 208, 255);
-    padding-top:100px;
-    padding-left:20px;
-    padding-right:20px;
-    padding-bottom:10px;
-
-    margin-top:-100px;
-    margin-left:-20px;
-    margin-right:-20px;
-
+h1 {
+    height: 100%;
 }
 
 h2 {
@@ -111,23 +228,35 @@ h2 {
 
     margin-left:10px;
     margin-right:10px;
+    margin-top:5px;
    
 }
 
 h5{
-    padding-top: 10px;
-    margin-bottom: -20px;
-    margin-left: 10px;
     color: rgb(0, 52, 68);
+
+    margin-top:5px;
+    margin-bottom:5px;
+    margin-left: 10px;
 }
 
 p {
-    margin-left: 20px;
+    padding-left:10px;
+    padding-right:10px;
+
+    margin-top:1px;
+    margin-bottom: 10px;
+
+    font-size: 15px;
 }
 
 ul{
     list-style:none;
+    padding:0;
 }
+li {
+    padding:0;
+ } 
 a {
     color: rgb(0, 0, 0);
 }

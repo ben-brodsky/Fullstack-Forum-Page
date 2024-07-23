@@ -42,7 +42,24 @@ app.post("/posts/:id", async (req, res) => {
         const result = await createComment(contents, postID)
         const post = await getPostFromID(postID)
         const comments = await getCommentsUnderPost(postID)
-        res.render("post.ejs", {post: post, comments: comments})
+        
+        return res.redirect("/posts/" + postID)
+    }
+})
+
+app.post("/posts/:id/:cid", async (req, res) => {
+
+    const postID = req.params.id
+    const parentID = req.params.cid
+    const contents = req.body.commentContents
+
+    if (req.body.commentContents != null)
+    {
+        const result = await createComment(contents, postID, parentID)
+        const post = await getPostFromID(postID)
+        const comments = await getCommentsUnderPost(postID)
+        
+        return res.redirect("/posts/" + postID)
     }
 })
 

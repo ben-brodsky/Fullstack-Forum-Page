@@ -1,0 +1,41 @@
+<% var treeLimit = 4 %>
+<% var depthCounter = 0 %>
+<% comments.findLast(comment => { %>
+<ul class="nested-ul">
+    <li>
+        <% if (comment.ParentID == null) { %>
+            <div class="comment-object">
+                <div id="commentContent">
+                    <h5 id="commentUsername"><%= comment.Username %></h5>
+                    <p><%= comment.Contents%></p>
+                </div>
+                <div>
+                    <form autocomplete="off" id= replyForm action="/posts/<%=post.ID%>/<%=comment.ID%>" method="POST">
+                        <input type="text" name="commentContents" placeholder="Reply"/>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                </div>
+            </div>
+        <%}else if (depthCounter <= treeLimit){%>
+        <% depthCounter++ %>
+            <div class="reply-object">
+                <div id="commentContent">
+                    <h5 id="commentUsername"><%= comment.Username %></h5>
+                    <p><%= comment.Contents%></p>
+                </div>
+                <div>
+                    <form autocomplete="off" id= replyForm action="/posts/<%=post.ID%>/<%=comment.ID%>" method="POST">
+                        <input type="text" name="commentContents" placeholder="Reply"/>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                </div>
+            </div>
+        <%}%>
+       
+    </li>
+    <% if (comment.Replies.length) { %>
+        <%- include('treeView', {comments: comment.Replies}) %>
+    <%}%>
+</ul>
+<%})%>
+

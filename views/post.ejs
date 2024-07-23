@@ -2,30 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css">
-    <title></title>
+    <title><%= post.Title %></title>
 </head>
 <body>
-    <h1><a href="/posts">Forum Page</a></h1>
-    <div id="renderedPost">
-        <h5><%= post.Username%></h5>
-        <h2><%= post.Title%></h2>
-        <p><%= post.Contents%></p>
+    <div class="content-header">
+        <p><a href="/posts">Forum Page</a></p>
     </div>
-    <div id="commentForm">
-        <form action="/posts/<%=post.ID%>" method="POST">
-            <input type="text" name="commentContents" placeholder="Add a comment"/>
-            <input type="submit" value="Submit"/>
-        </form>
-    </div>  
-    <ul>
-        <% comments.findLast(comment => { %>
-            <li>
-                <h5 id="commentUsername"><%= comment.Username %></h5>
-                <p><%= comment.Contents%></p>
-            </li>
-        <%})%>
-    </ul>
+
+    <div id="topGap"></div>
+
+    <div class="content-container">
+        <div class="post-container">
+            <div class="post-object">
+                <h5><%= post.Username%></h5>
+                <h2><%= post.Title%></h2>
+                <p><%= post.Contents%></p>
+            </div>
+            <div id="commentForm">
+                <form autocomplete="off" action="/posts/<%=post.ID%>" method="POST">
+                    <input type="text" name="commentContents" placeholder="Add a comment"/>
+                    <input type="submit" value="Submit"/>
+                </form>
+            </div>  
+        </div>
+
+        <div class="comment-container">
+            <%- include('treeView', {comments: comments}) %>
+        </div>
+    </div>
 </body>
 </html>

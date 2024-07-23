@@ -25,13 +25,63 @@ export async function getPostFromID(id)
 export async function getCommentFromID(id)
 {
     const [result] = await pool.query("SELECT * FROM comments WHERE ID = ?", [id])
-    return result[0]
+    const comment = {
+        ID: result.ID,
+        Username: result.Username,
+        Contents: result.Contents,
+        PostID: result.PostID,
+        ParentID: result.ParentID,
+        Replies: []
+    }
+
+    return comment
 }
 
 export async function getCommentsUnderPost(id)
 {
     const [result] = await pool.query("SELECT * FROM comments WHERE PostID = ?", [id])
-    return result
+
+    var comments = []
+
+    for(let i = 0; i < result.length; i++)
+    {
+        if (result[i].ParentID == null)
+        {
+            comments.push({
+                ID: result[i].ID,
+                Username: result[i].Username,
+                Contents: result[i].Contents,
+                PostID: result[i].PostID,
+                ParentID: result[i].ParentID,
+                Replies: []
+            })
+        }
+    }
+
+    await populateReplies(comments)
+
+    return comments
+}
+
+export async function getRepliesUnderComment(id)
+{
+    const [result] = await pool.query("SELECT * FROM comments WHERE ParentID = ?", [id])
+
+    var replies = []
+
+    for(let i = 0; i < result.length; i++)
+    {
+        replies.push({
+            ID: result[i].ID,
+            Username: result[i].Username,
+            Contents: result[i].Contents,
+            PostID: result[i].PostID,
+            ParentID: result[i].ParentID,
+            Replies: []
+        })
+    }
+
+    return replies
 }
 
 export async function createPost(username, title, contents)
@@ -46,4 +96,19 @@ export async function createComment(contents, postID, parentID)
     const [result] = await pool.query("INSERT INTO comments (Username, Contents, PostID, ParentID) VALUES ('automatic', ?, ?, ?)", [contents, postID, parentID])
     const id = result.insertID
     return getCommentFromID(id)
+}
+
+async function populateReplies(comments)
+{
+    for(let i = 0; i < comments.length; i++)
+    {
+        const replies = await getRepliesUnderComment(comments[i].ID)
+
+        if (replies.length)
+        {
+            comments[i].Replies = comments[i].Replies.concat(replies)
+
+           await populateReplies(replies)
+        }
+    }
 }
