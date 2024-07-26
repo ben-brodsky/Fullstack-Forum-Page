@@ -63,6 +63,32 @@ export async function getCommentsUnderPost(id)
     return comments
 }
 
+export async function getExpandedComments(id)
+{
+    const [result] = await pool.query("SELECT * FROM comments WHERE ID = ?", [id])
+
+    var comments = []
+
+    for(let i = 0; i < result.length; i++)
+    {
+        if (result[i].ID == result[0].ID)
+        {
+            comments.push({
+                ID: result[i].ID,
+                Username: result[i].Username,
+                Contents: result[i].Contents,
+                PostID: result[i].PostID,
+                ParentID: result[i].ParentID,
+                Replies: []
+            })
+        }
+    }
+
+    await populateReplies(comments)
+
+    return comments
+}
+
 export async function getRepliesUnderComment(id)
 {
     const [result] = await pool.query("SELECT * FROM comments WHERE ParentID = ?", [id])

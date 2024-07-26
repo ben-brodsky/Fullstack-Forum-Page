@@ -6,12 +6,6 @@
     <title><%= post.Title %></title>
 </head>
 <body>
-    <div class="content-header">
-        <p><a href="/posts">Forum Page</a></p>
-    </div>
-
-    <div id="topGap"></div>
-
     <div class="content-container">
         <div class="post-container">
             <div class="post-object">
@@ -27,8 +21,10 @@
             </div>  
         </div>
 
+        <% var treeLimit = 6 %>
+        <% var depthCounter = 0 %>
         <div class="comment-container">
-            <%- include('treeView', {comments: comments}) %>
+            <%- include('treeView', {pageReturn: "/posts/" + post.ID + "/", postID: post.ID, comments: comments, depthCounter: depthCounter, treeLimit: treeLimit}) %>
         </div>
     </div>
 </body>

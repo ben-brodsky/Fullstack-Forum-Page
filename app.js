@@ -1,5 +1,5 @@
 import express from 'express'
-import {getPosts, getPostFromID, createPost, getCommentsUnderPost, createComment} from "./database.js"
+import {getPosts, getPostFromID, createPost, getCommentsUnderPost, createComment, getExpandedComments} from "./database.js"
 
 const app = express()
 const port = 8080
@@ -23,6 +23,14 @@ app.get("/posts/:id", async (req, res) =>
     const post = await getPostFromID(id)
     const comments = await getCommentsUnderPost(id)
     res.render("post.ejs", {post: post, comments: comments})
+})
+
+app.get("/comments/:id/:cid", async (req, res) => {
+
+    const postID = req.params.id
+    const commentID = req.params.cid
+    const comments = await getExpandedComments(commentID)
+    res.render("expandedComments.ejs", {expandedCommentID: commentID, postID: postID, comments: comments})
 })
 
 app.post("/posts", async (req, res) => 
@@ -56,10 +64,21 @@ app.post("/posts/:id/:cid", async (req, res) => {
     if (req.body.commentContents != null)
     {
         const result = await createComment(contents, postID, parentID)
-        const post = await getPostFromID(postID)
-        const comments = await getCommentsUnderPost(postID)
-        
         return res.redirect("/posts/" + postID)
+    }
+})
+
+app.post("/comments/:id/:eid/:cid", async (req, res) => {
+
+    const postID = req.params.id
+    const expandedID = req.params.eid
+    const commentID = req.params.cid
+    const contents = req.body.commentContents
+
+    if (req.body.commentContents != null)
+    {
+        const result = await createComment(contents, postID, commentID)
+        return res.redirect("/comments/" + postID + "/" + expandedID)
     }
 })
 

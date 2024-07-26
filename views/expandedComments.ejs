@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="content-container">
+        <% var treeLimit = 7 %>
+        <% var depthCounter = 0 %>
+        <div class="comment-container">
+            <%- include('expandedTreeView', {expandedCommentID: expandedCommentID, postID: postID, comments: comments, depthCounter: depthCounter, treeLimit: treeLimit}) %>
+        </div>
+    </div>
+</body>

@@ -3,21 +3,7 @@
 <% comments.findLast(comment => { %>
 <ul class="nested-ul">
     <li>
-        <% if (comment.ParentID == null) { %>
-            <%depthCounter = 0%>
-            <div class="comment-object">
-                <div id="commentContent">
-                    <h5 id="commentUsername"><%= comment.Username %></h5>
-                    <p><%= comment.Contents%></p>
-                </div>
-                <div>
-                    <form autocomplete="off" id= replyForm action=<%=pageReturn + comment.ID%> method="POST">
-                        <input type="text" name="commentContents" placeholder="Reply"/>
-                        <input type="submit" value="Submit"/>
-                    </form>
-                </div>
-            </div>
-        <%}else if (depthCounter < treeLimit){%>
+        <%if (depthCounter < treeLimit){%>
             <%currentID = comment.ID%>
             <div class="reply-object">
                 <div id="commentContent">
@@ -25,7 +11,7 @@
                     <p><%= comment.Contents%></p>
                 </div>
                 <div>
-                    <form autocomplete="off" id= replyForm action=<%=pageReturn + comment.ID%> method="POST">
+                    <form autocomplete="off" id= replyForm action="/comments/<%=postID%>/<%=expandedCommentID%>/<%=comment.ID%>" method="POST">
                         <input type="text" name="commentContents" placeholder="Reply"/>
                         <input type="submit" value="Submit"/>
                     </form>
@@ -34,7 +20,7 @@
         <%}%>
     </li>
     <% if (comment.Replies.length) { %>
-        <%- include('treeView', {comments: comment.Replies, commentID: comment.ID}) %>
+        <%- include('treeView', {pageReturn: "/comments/" + postID + "/" + expandedCommentID + "/", comments: comment.Replies, commentID: comment.ID}) %>
     <%}%>
 </ul>
 <%})%>
