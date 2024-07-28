@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/style.css">
+        <title>Forum Page</title>
+    </head>
+    <body>
+        <div class="content-container">
+            <div id="main-post-container" class="main-post-container">
+            </div>
+        </div>
+    </body>
+    <script>
+        const baseURl = "http://localhost:8080"
+
+        async function getPosts()
+        {
+            const res = await fetch(baseURl + "/posts", {
+
+                method: "GET"
+            })
+
+            const data = await res.json()
+            const posts = data.posts
+            
+            await generatePosts(posts)
+        }
+
+        async function generatePosts(posts)
+        {
+            posts.findLast((post) => {
+                const postObject = document.createElement("div")
+                postObject.classList.add("main-post-object")
+
+                const postUsername = document.createElement("h5")
+                const postTitle = document.createElement("h2")
+                const postLink = document.createElement("a")
+
+                postLink.href = "/post?id=" + post.ID
+
+                postUsername.appendChild(document.createTextNode(post.Username))
+                postLink.appendChild(document.createTextNode(post.Title))
+                postTitle.appendChild(postLink)
+                postObject.appendChild(postUsername)
+                postObject.appendChild(postTitle)
+
+                const postContainer = document.getElementById("main-post-container")
+                postContainer.appendChild(postObject)
+            })
+        }
+
+        const posts = getPosts()
+    </script>
+</html>
+

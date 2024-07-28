@@ -1,85 +1,51 @@
 import express from 'express'
+import path from 'path';
+import { fileURLToPath } from 'url';
 import {getPosts, getPostFromID, createPost, getCommentsUnderPost, createComment, getExpandedComments} from "./database.js"
 
 const app = express()
 const port = 8080
+
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+app.use(express.static("public"))
 
-app.set("view engine", "ejs")
-app.set("views", "views")
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+
+app.get("/", (req, res) => {
+  
+    res.sendFile(__dirname + "/views/index.html")
+})
 
 app.get("/posts", async (req, res) => {
-  
-    const posts = await getPosts()
-    res.render("index.ejs", {posts: posts})
+    
+    const result = await getPosts()
+    res.status(200).json({posts: result})
 })
 
-app.get("/posts/:id", async (req, res) =>
-{
-    const id = req.params.id
-    const post = await getPostFromID(id)
-    const comments = await getCommentsUnderPost(id)
-    res.render("post.ejs", {post: post, comments: comments})
+app.get("/post", async (req, res) => {
+    
+   res.sendFile(__dirname + "/views/post.html")
 })
 
-app.get("/comments/:id/:cid", async (req, res) => {
-
+app.get("/post/:id", async (req, res) => {
+    
     const postID = req.params.id
-    const commentID = req.params.cid
-    const comments = await getExpandedComments(commentID)
-    res.render("expandedComments.ejs", {expandedCommentID: commentID, postID: postID, comments: comments})
+    const post = await getPostFromID(postID)
+    const comments = await getCommentsUnderPost(postID)
+    res.status(200).json({post: post, comments: comments})
 })
 
-app.post("/posts", async (req, res) => 
-{
-    const {username, title, contents} = req.body
-    const result = await createPost(username, title, contents)
-    res.status(201).send(result)
-})
+app.post("/post", async (req, res) => {
 
-app.post("/posts/:id", async (req, res) => {
-
-    const postID = req.params.id
-    const contents = req.body.commentContents
-
-    if (req.body.commentContents != null)
-    {
-        const result = await createComment(contents, postID)
-        const post = await getPostFromID(postID)
-        const comments = await getCommentsUnderPost(postID)
-        
-        return res.redirect("/posts/" + postID)
-    }
-})
-
-app.post("/posts/:id/:cid", async (req, res) => {
-
-    const postID = req.params.id
-    const parentID = req.params.cid
-    const contents = req.body.commentContents
-
-    if (req.body.commentContents != null)
-    {
-        const result = await createComment(contents, postID, parentID)
-        return res.redirect("/posts/" + postID)
-    }
-})
-
-app.post("/comments/:id/:eid/:cid", async (req, res) => {
-
-    const postID = req.params.id
-    const expandedID = req.params.eid
-    const commentID = req.params.cid
-    const contents = req.body.commentContents
-
-    if (req.body.commentContents != null)
-    {
-        const result = await createComment(contents, postID, commentID)
-        return res.redirect("/comments/" + postID + "/" + expandedID)
-    }
+    const {commentContents, postID, commentID} = req.body
+    
+    await createComment(commentContents, postID, commentID)
+    
+    res.status(200).send({status: "recieved"})
 })
 
 app.use((err, req, res, next) =>
@@ -87,8 +53,6 @@ app.use((err, req, res, next) =>
     console.error(err.stack)
     res.status(500).send("Something Broke")
 })
-
-app.use(express.static("public"))
 
 app.listen(port, () =>
 {

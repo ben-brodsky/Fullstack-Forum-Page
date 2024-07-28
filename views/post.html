@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+    <title id="pageTitle"></title>
+</head>
+<template id="comment-template">
+    <div id="comment-object" class="comment-object">
+        <h5 id="comment-username"></h5>
+        <p id="comment-contents"></p>
+        <form autocomplete="off" id=replyForm method="POST">
+            <input type="text" name="commentContents" placeholder="Reply"/>
+            <input type="submit" value="Submit"/>
+        </form>
+    </div>
+</template>
+<body>
+    <div class="content-container">
+        <div class="post-container">
+            <div class="post-object">
+                <h5 id="username"></h5>
+                <h2 id="title"></h2>
+                <p id="contents"></p>
+            </div>
+            <div id="commentForm">
+                <form autocomplete="off" id="comment-form" method="POST">
+                    <input type="text" name="commentContents" placeholder="Add a comment"/>
+                    <input type="submit" value="Submit"/>
+                </form>
+            </div>  
+        </div>
+    </div>
+</body>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    const postID = urlParams.get('id')
+
+    const baseURl = "http://localhost:8080"
+
+    const treeDepth = 6
+    var depthCounter = 0
+
+    const form = document.querySelector('#comment-form'); 
+ 
+    form.addEventListener('submit', async function(event) { 
+
+        event.preventDefault()
+        
+        let commentContents = form.childNodes[1]
+    
+        if (commentContents.value != "")
+        {
+            await fetch("/post", {
+
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "commentContents": commentContents.value,
+                    "postID": postID
+                })
+
+            })
+        }
+
+        commentContents.value = ''
+        depthCounter = 0
+        refreshComments()
+    })
+
+    async function refreshComments()
+    {
+        pageScroll = document.documentElement.scrollTop
+        let commentContainer = document.getElementById("comment-container")
+
+        const res = await fetch(baseURl + "/post/" + postID, {
+
+            method: "GET"
+        })
+
+        const data = await res.json()
+        const comments = data.comments
+
+        const newCommentContainer = await generateComments(comments)
+        commentContainer.replaceWith(newCommentContainer)
+
+        document.documentElement.scrollTop = document.body.scrollTop = pageScroll;
+    }
+
+    async function getPost()
+    {
+        const res = await fetch(baseURl + "/post/" + postID, {
+
+            method: "GET"
+        })
+
+        const data = await res.json()
+        const post = data.post
+        const comments = data.comments
+
+        await generatePost(post)
+        const commentContainer = await generateComments(comments)
+
+        document.body.appendChild(commentContainer)
+    }
+
+    async function generatePost(post)
+    {
+        const pageTitle = document.getElementById("pageTitle")
+        const username = document.getElementById("username")
+        const title = document.getElementById("title")
+        const contents = document.getElementById("contents")
+
+        pageTitle.appendChild(document.createTextNode(post.Title))
+        username.appendChild(document.createTextNode(post.Username))
+        title.appendChild(document.createTextNode(post.Title))
+        contents.appendChild(document.createTextNode(post.Contents))
+    }
+
+    async function generateComments(comments, replacementContainer)
+    {
+        if (!replacementContainer)
+        {
+            replacementContainer = document.createElement("div")
+            replacementContainer.setAttribute("id", "comment-container")
+            replacementContainer.classList.add("comment-container")
+        }
+
+        if (depthCounter < treeDepth)
+        {
+            comments.findLast(comment => {
+                //Generate Comment
+                var commentTemplate = document.getElementById("comment-template")
+                var commentObjectTemplate = commentTemplate.content.getElementById("comment-object")
+                var commentObject = commentObjectTemplate.cloneNode(true)
+
+                commentObject.setAttribute("id", "comment-container-clone")
+                
+                var commentUsername = commentObject.childNodes[1]
+                var commentContents = commentObject.childNodes[3]
+
+                var nestedUL = document.createElement("ul")
+                var li = document.createElement("li")
+                nestedUL.classList.add("nested-ul")
+                nestedUL.appendChild(li)
+
+                commentUsername.appendChild(document.createTextNode(comment.Username))
+                commentContents.appendChild(document.createTextNode(comment.Contents))
+
+                li.appendChild(commentObject)
+                replacementContainer.appendChild(nestedUL)
+
+                //Add functionality to reply form
+                let form = commentObject.childNodes[5]
+                form.addEventListener('submit', async function(event) { 
+                    
+                    event.preventDefault()
+                    
+                    let commentContents = form.childNodes[1]
+                    console.log(form.childNodes[1])
+                
+                    if (commentContents.value != "")
+                    {
+                        await fetch("/post", {
+
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                "commentContents": commentContents.value,
+                                "postID": postID,   
+                                "commentID": comment.ID
+                            })
+
+                        })
+                    }
+
+                    commentContents.value = ''
+                    depthCounter = 0
+                    refreshComments()
+                })
+
+
+                if (comment.Replies.length)
+                {
+                    generateComments(comment.Replies, nestedUL)
+                }
+            })
+        }
+        
+        return replacementContainer
+    }
+
+    getPost()
+
+</script>
+</html>
