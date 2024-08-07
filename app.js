@@ -1,14 +1,15 @@
-import express from 'express'
+import express from 'express';
 import path from 'path';
+import cors from "cors";
 import { fileURLToPath } from 'url';
-import {getPosts, getPostFromID, createPost, getCommentsUnderPost, createComment, getExpandedComments} from "./database.js"
+import {getPosts, getPostFromID, createPost, getCommentsUnderPost, createComment, getExpandedComments} from "./database.js";
 
 const app = express()
 const port = 8080
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-
+app.use(cors())
 app.use(express.static("public"))
 
 const __filename = fileURLToPath(import.meta.url);
@@ -41,9 +42,9 @@ app.get("/post/:id", async (req, res) => {
 
 app.post("/post", async (req, res) => {
 
-    const {commentContents, postID, commentID} = req.body
+    const {title, content} = req.body
     
-    await createComment(commentContents, postID, commentID)
+    await createPost(title, content)
     
     res.status(200).send({status: "recieved"})
 })

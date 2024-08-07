@@ -122,6 +122,8 @@
 
     async function generateComments(comments, replacementContainer)
     {
+        depthCounter++
+
         if (!replacementContainer)
         {
             replacementContainer = document.createElement("div")
@@ -132,6 +134,7 @@
         if (depthCounter < treeDepth)
         {
             comments.findLast(comment => {
+
                 //Generate Comment
                 var commentTemplate = document.getElementById("comment-template")
                 var commentObjectTemplate = commentTemplate.content.getElementById("comment-object")
@@ -147,7 +150,7 @@
                 nestedUL.classList.add("nested-ul")
                 nestedUL.appendChild(li)
 
-                commentUsername.appendChild(document.createTextNode(comment.Username))
+                commentUsername.appendChild(document.createTextNode(comment.Username + " " + depthCounter))
                 commentContents.appendChild(document.createTextNode(comment.Contents))
 
                 li.appendChild(commentObject)

@@ -110,7 +110,7 @@ export async function getRepliesUnderComment(id)
     return replies
 }
 
-export async function createPost(username, title, contents)
+export async function createPost(title, contents, username,)
 {
     const [result] = await pool.query("INSERT INTO posts (Username, Title, Contents) VALUES ('automatic', ?, ?)", [title, contents])
     const id = result.insertId
