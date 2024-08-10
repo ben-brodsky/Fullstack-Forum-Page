@@ -45,7 +45,7 @@ export async function getCommentsUnderPost(id)
 
     for(let i = 0; i < result.length; i++)
     {
-        if (result[i].ParentID == null)
+        if (result[i].ParentID == 0)
         {
             comments.push({
                 ID: result[i].ID,
@@ -59,7 +59,6 @@ export async function getCommentsUnderPost(id)
     }
 
     await populateReplies(comments)
-
     return comments
 }
 
@@ -119,8 +118,10 @@ export async function createPost(title, contents, username,)
 
 export async function createComment(contents, postID, parentID)
 {
+    console.log(contents, postID, parentID)
     const [result] = await pool.query("INSERT INTO comments (Username, Contents, PostID, ParentID) VALUES ('automatic', ?, ?, ?)", [contents, postID, parentID])
     const id = result.insertID
+    console.log(result)
     return getCommentFromID(id)
 }
 

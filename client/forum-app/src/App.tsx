@@ -1,9 +1,10 @@
 import PostsContainer from './components/PostsContainer';
 import PostCreation from './components/PostCreation';
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import './style.css'
 
 function App() {
+    const [posts, setPosts] = useState([]);
     const [creatingPost, setCreatingPost] = useState(false);
     const [viewingPost, setViewingPost] = useState(false);
 
@@ -37,14 +38,20 @@ function App() {
                     }
                 </div>
                     <PostsContainer 
+                    posts={posts}
+                    setPosts={setPosts}
                     cancelPostState={cancelPostCreationState} 
                     setViewingPost={isViewingPost} 
-                    viewingPost={viewingPost}/>
+                    viewingPost={viewingPost}
+                    />
                 <div 
                 className="black" 
                 id="side-bar">
                     {creatingPost
-                    ? <PostCreation cancelPostState={cancelPostCreationState}/> 
+                    ? <PostCreation 
+                    setPosts={setPosts}
+                    cancelPostState={cancelPostCreationState}
+                    /> 
                     : <></>
                     }
                 </div>

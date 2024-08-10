@@ -1,66 +1,52 @@
 #side-bar{
     display: flex;
     flex-direction: column;
-
     max-width:600px;
     min-width: 200px;
-
     width:auto;
     height: 100vh;
-
     position:sticky;
-    top: 0px;
+    top: 50px;
     left: 0px;
-
     box-shadow: 0px 0px 12px black;
 }
 
 #page-header{
     width: 100vw;
     height: 50px;
-
     z-index: 10;
-    
     position: fixed;
     top:0;
-
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-
     font-weight: bold;
     text-align: center;
-
     margin:0;
 }
 
-#post-object{
-    max-width: 600px;
-    min-width: 100px;
+#comment-form{
+    display: flex;
+    flex-direction: row;
+    align-content:center;
+    border-radius:10px;
+    width:100%;
+}
 
-    width:600px;
-
-    height: fit-content;
-
-    border-radius: 10px;
-    
-    padding-left:10px;
-    padding-top:1px;
-    padding-bottom:1px; 
-    padding-right:10px;
-
-    margin: 10px;
-
-    word-wrap:break-word;
+#reply-form{
+    display: flex;
+    flex-direction: row;
+    align-content:center;
+    border-radius:10px;
+    padding-top:5px;
 }
 
 #post-thumbnail{
     max-width: 600px;
     min-width: 100px;
-
     border-radius: 10px;
-    
+
     padding-left:10px;
     padding-top:1px;
     padding-bottom:1px; 
@@ -73,12 +59,9 @@
 
 #post-thumbnail:hover{
     cursor:pointer;
-
     max-width: 600px;
     min-width: 100px;
-
-    border-radius: 10px;
-    
+    border-radius: 10px; 
     padding-left:10px;
     padding-right:10px;
 }
@@ -86,11 +69,8 @@
 #post-username{
     min-width: none;
     max-width: fit-content;
-
     font-weight: bold;
-
     margin-top: 10px;
-
     padding:5px;
     border-radius: 10px;
 }
@@ -98,20 +78,15 @@
 #post-title{
     border-radius: 10px;
     padding:5px;
-
     margin-bottom:15px;
 }
 
 #create-post-title{
     resize:none;
-
     width:80%;
     height:40px;
-
     border-radius:10px;
-
     padding:5px;
-
     font-family: Verdana, Tahoma, sans-serif;
     font-size: 14px;
 }
@@ -130,25 +105,19 @@
     font-size: 14px;
 }
 
-#create-post-body:focus{
-    outline: solid 2px #BB794A;
-}
-
-#create-post-title:focus{
-    outline: solid 2px #BB794A;
-}
-
 #return-button{
     position: relative;
     margin:0;
 }
 
+textarea:focus{
+    outline: solid 1px #8E463F;
+}
+
 #posts-container{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-
-    align-self: flex-start;
+    justify-content: start;
 
     max-width: 600px;
     min-width: 100px;
@@ -159,6 +128,11 @@
 
     margin:0;
     padding:0;
+}
+
+#full-post-container{
+    display: flex;
+    flex-direction: column;
 }
 
 #post-creation-page
@@ -185,42 +159,99 @@
 #root{
     display: flex;
     flex-direction: column;
-
 }
 
 #content-container{
 
     margin-top: 50px;
-
     display: flex;
     flex-direction: row;
-
     justify-content: space-between;
-
     width: 100vw;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    
     overscroll-behavior-y: none;
     overscroll-behavior-x: none;
-
     font-family: Verdana, Tahoma, sans-serif;
 }
 
 div.header-content{
     width: 100%;
     height:100%;
-
     margin-left:20px;
     margin-right:20px;
-
     display: flex;
     flex-direction: row;
-
     align-items: center;
+}
+
+div.post{
+    max-width: 600px;
+    min-width: 100px;
+    width:600px;
+    height: fit-content;
+    border-radius: 10px;
+    margin: 10px;
+    word-wrap:break-word;
+    padding:10px;
+    box-sizing: 100%;
+}
+
+textarea.comment{
+    background-color: #d8d5c5;
+    height:20px;
+    resize:none;
+    width:50%;
+    border-radius:10px;
+    padding:5px;
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: 14px;
+    color:black;
+}
+
+button.comment-form{
+    font-size: 13px;
+    height:30px;
+}
+
+ul.comment{
+    list-style: none;
+    padding-left:10px;
+    margin-right:10px;
+    max-width: 620px;
+}
+
+p.comment{
+    font-size:15px;
+    margin:0px;
+}
+
+#nested-ul{
+    padding-left:50px;
+    margin-bottom:10px;
+    list-style: none;
+    border-left: 2px dashed #F0EFE7;
+}
+
+div.comment{
+    padding-left:10px;
+    padding-right:10px;
+    padding-bottom:10px;
+    padding-top:2px;
+    height:fit-content;
+    margin-bottom: 20px;
+    word-break: break-all;
+}
+
+div.comment-form{
+    margin-top:0px;
+    margin-bottom:10px;
+    padding-left:10px;
+    padding-bottom:5px;
+    border-radius: 10px;
 }
 
 button.medium-button{
@@ -325,7 +356,6 @@ p.header-content{
 
 .gray{
     background: #d8d5c5;
-
     border-radius: 10px;
 }
 
