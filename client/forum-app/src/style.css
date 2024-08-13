@@ -299,6 +299,12 @@ button.orange:focus{
     outline: 1px solid #d8d5c5;
 }
 
+button.white:hover{
+
+    outline:none;
+    background-color: #A48C82;
+}
+
 .side-content{
     position: sticky;
     top:60px;
